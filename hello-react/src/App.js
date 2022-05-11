@@ -5,7 +5,7 @@ import TodoList from './components/TodoList';
 
 function createBulkTodos() {
   const arrary = [];
-  for (let i = 1; i <= 2500; i++) {
+  for (let i = 1; i <= 200; i++) {
     arrary.push({
       id: i,
       text: `할 일 ${i}`,
@@ -51,7 +51,7 @@ const App = () => {
   //   },
   // ];
 
-  const nextId = useRef(2501);
+  const nextId = useRef(201);
 
   const onInsert = useCallback((text) => {
     const todo = {
