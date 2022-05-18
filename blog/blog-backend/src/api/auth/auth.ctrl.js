@@ -14,7 +14,7 @@ export const register = async (ctx) => {
     username: Joi.string().alphanum().min(3).max(20).required(),
     password: Joi.string().required(),
   });
-  const result = schema.validate(ctx.request.body);
+  const result = Joi.validate(ctx.request.body, schema);
   if (result.error) {
     ctx.status = 400;
     ctx.body = result.error;
@@ -36,15 +36,25 @@ export const register = async (ctx) => {
     await user.setPassword(password); // 비밀번호 설정
     await user.save(); // 데이터베이스에 저장
 
-    //응답할 데이터에서 hashedPassword 필드 제거
-    const data = user.toJSON();
-    delete data.hashedPassword;
     ctx.body = user.serialize();
+
+    const token = user.generateToken();
+    ctx.cookies.set('access_token', token, {
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7일
+      httpOnly: true,
+    });
   } catch (e) {
     ctx.throw(500, e);
   }
 };
 
+/*
+    POST /api/auth/login
+    {
+      username: 'velopert',
+      password: 'mypass123'
+    }
+  */
 export const login = async (ctx) => {
   const { username, password } = ctx.request.body;
 
@@ -68,14 +78,15 @@ export const login = async (ctx) => {
       return;
     }
     ctx.body = user.serialize();
-    //   const token = user.generateToken();
-    //   ctx.cookies.set('access_token', token, {
-    //     maxAge: 1000 * 60 * 60 * 24 * 7, // 7일
-    //     httpOnly: true,
-    //   });
+    const token = user.generateToken();
+    ctx.cookies.set('access_token', token, {
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7일
+      httpOnly: true,
+    });
   } catch (e) {
     ctx.throw(500, e);
   }
 };
+
 export const check = async (ctx) => {};
 export const logout = async (ctx) => {};
