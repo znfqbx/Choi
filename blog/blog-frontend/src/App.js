@@ -16,7 +16,7 @@ const App = () => {
       <Route path="/write" element={<WritePage />} />
       <Route path="/@:username">
         <Route index element={<PostListPage />} />
-        <Route path="postId" element={<PostPage />} />
+        <Route path=":postId" element={<PostPage />} />
       </Route>
     </Routes>
   );
