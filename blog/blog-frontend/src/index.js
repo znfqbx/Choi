@@ -32,7 +32,7 @@ root.render(
     <BrowserRouter>
       <App />
       여기는 src index.js 이고 <br></br>
-      몬구 유진
+      몬구 바뷰바뷰
     </BrowserRouter>
     
   </Provider>,
