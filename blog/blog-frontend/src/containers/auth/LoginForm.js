@@ -3,16 +3,22 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { changeField } from "../../modules/auth";
 import { initializeForm } from "../../modules/auth";
+import { login } from "../../modules/auth";
 import AuthForm from "../../components/auth/AuthForm";
+import { check } from "../../modules/user";
+import { useNavigate } from "react-router-dom";
 
-const LoginForm = () => {
+
+
+const LoginForm = ({ history }) => {
     // const [error, setError] = useState(null);
+    const navigate =useNavigate();
     const dispatch = useDispatch();
-    const { form } = useSelector(({ auth }) => ({
+    const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
       form: auth.login,
-    //   auth: auth.auth,
-    //   authError: auth.authError,
-    //   user: user.user,
+      auth: auth.auth,
+      authError: auth.authError,
+      user: user.user,
     }));
     // 인풋 변경 이벤트 핸들러
     const onChange = e => {
@@ -29,8 +35,8 @@ const LoginForm = () => {
     // 폼 등록 이벤트 핸들러
     const onSubmit = e => {
       e.preventDefault();
-    //   const { username, password } = form;
-    //   dispatch(login({ username, password }));
+      const { username, password } = form;
+      dispatch(login({ username, password }));
     };
   
     // 컴포넌트가 처음 렌더링 될 때 form 을 초기화함
@@ -38,24 +44,25 @@ const LoginForm = () => {
       dispatch(initializeForm('login'));
     }, [dispatch]);
   
-    // useEffect(() => {
-    //   if (authError) {
-    //     console.log('오류 발생');
-    //     console.log(authError);
-    //     setError('로그인 실패');
-    //     return;
-    //   }
-    //   if (auth) {
-    //     console.log('로그인 성공');
-    //     dispatch(check());
-    //   }
-    // }, [auth, authError, dispatch]);
+    useEffect(() => {
+      if (authError) {
+        console.log('오류 발생');
+        console.log(authError);
+        // setError('로그인 실패');
+        return;
+      }
+      if (auth) {
+        console.log('로그인 성공');
+        dispatch(check());
+      }
+    }, [auth, authError, dispatch]);
   
-    // useEffect(() => {
-    //   if (user) {
-    //     history.push('/');
-    //   }
-    // }, [history, user]);
+    useEffect(() => {
+      if (user) {
+        // history.push('/');
+        navigate('/');
+      }
+    }, [navigate, user]);
   
     return (
       <AuthForm
