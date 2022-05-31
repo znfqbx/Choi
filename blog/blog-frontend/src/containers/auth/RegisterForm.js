@@ -92,6 +92,11 @@ const RegisterForm = () => {
         // console.log(user);
         // history.push('/'); // 홈 화면으로 이동
         navigate('/');
+        try{
+          localStorage.setItem('user', JSON.stringify(user));
+        } catch (e){
+          console.log('localStorage is not working');
+        }
       }
     }, [navigate, user]);
   
