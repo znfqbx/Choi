@@ -7,6 +7,9 @@ import RegisterPage from './pages/RegisterPage';
 import PostListPage from './pages/PostListPage';
 import WritePage from './pages/WritePage';
 import PostPage from './pages/PostPage';
+import Hello from './pages/Hello';
+import SimpleBottomNavigation from './pages/botton';
+
 // function App() {
 //   return (
 //     <div className="App">
@@ -35,10 +38,13 @@ const App =() => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/write" element={<WritePage />} />
+      <Route path="/home" element={<Hello />} />
+      <Route path="/botton" element={<SimpleBottomNavigation />} />
       <Route path="/@:username">
         <Route index element ={<PostListPage />} />
         <Route path=":postId" element={<PostPage />} />
         </Route>
+        
     </Routes>
   );
 };
